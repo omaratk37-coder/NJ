@@ -1,0 +1,6 @@
+{
+  "name": "najiacademy",
+  "description": "Arabic primary Web platform for NAJI ACADEMY language and skills training center in Sidi Bel Abbès.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

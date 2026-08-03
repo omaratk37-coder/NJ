@@ -1,0 +1,406 @@
+{
+  "entities": {
+    "course": {
+      "title": "Course",
+      "description": "An educational course offered by Naji Academy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "language": { "type": "string" },
+        "level": { "type": "string" },
+        "duration": { "type": "string" },
+        "schedule": { "type": "string" },
+        "start_date": { "type": "string" },
+        "max_seats": { "type": "number" },
+        "enrolled_count": { "type": "number" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "paused"] },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "language", "level", "duration", "schedule", "start_date", "max_seats", "enrolled_count", "price", "description", "status"]
+    },
+    "booking": {
+      "title": "Booking",
+      "description": "A student's course booking request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "student_name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "message": { "type": "string" },
+        "admin_notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "rejected"] },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "student_name", "phone", "status", "created_at"]
+    },
+    "review": {
+      "title": "Review",
+      "description": "A student's course feedback review",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "student_name": { "type": "string" },
+        "review_text": { "type": "string" },
+        "rating": { "type": "number" },
+        "course_name": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved"] },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "student_name", "review_text", "rating", "status", "created_at"]
+    },
+    "gallery_image": {
+      "title": "GalleryImage",
+      "description": "An image displayed in the academy's media gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "image_url": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "sort_order": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "image_url", "title", "category", "sort_order"]
+    },
+    "video": {
+      "title": "Video",
+      "description": "An educational or promotional video clip",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "embed_url": { "type": "string" },
+        "description": { "type": "string" },
+        "is_featured": { "type": "boolean" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "title", "embed_url", "is_featured"]
+    },
+    "admin_user": {
+      "title": "AdminUser",
+      "description": "An administrator, manager, or teacher system account",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["superadmin", "manager", "teacher"] },
+        "password": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "site_setting": {
+      "title": "SiteSetting",
+      "description": "A dynamic configuration key-value pair for the academy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "key": { "type": "string" },
+        "value": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "key", "value"]
+    },
+    "contact_message": {
+      "title": "ContactMessage",
+      "description": "A message submitted from the contact form",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "phone", "message", "created_at"]
+    },
+    "student": {
+      "title": "Student",
+      "description": "A registered student in Naji Academy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "student_code": { "type": "string" },
+        "full_name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "password_hash": { "type": "string" },
+        "notes": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "student_code", "full_name", "phone", "password_hash", "created_at"]
+    },
+    "enrollment": {
+      "title": "Enrollment",
+      "description": "A student's course enrollment record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "student_id": { "type": "string" },
+        "course_id": { "type": "string" },
+        "amount_paid": { "type": "number" },
+        "enrolled_at": { "type": "string" },
+        "sub_type": { "type": "string" },
+        "sub_price": { "type": "number" },
+        "sub_duration": { "type": "string" },
+        "sub_sessions": { "type": "number" },
+        "sub_end_date": { "type": "string" }
+      },
+      "required": ["id", "student_id", "course_id", "amount_paid", "enrolled_at"]
+    },
+    "attendance": {
+      "title": "Attendance",
+      "description": "A student attendance confirmation record for a course session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "enrollment_id": { "type": "string" },
+        "session_date": { "type": "string" },
+        "confirmed": { "type": "boolean" },
+        "confirmed_at": { "type": "string" },
+        "created_at": { "type": "string" },
+        "attended_after_session": { "type": "boolean" },
+        "rejected": { "type": "boolean" }
+      },
+      "required": ["id", "enrollment_id", "session_date", "confirmed", "created_at"]
+    },
+    "teacher": {
+      "title": "Teacher",
+      "description": "A teacher profile record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "exp": { "type": "string" },
+        "avatar": { "type": "string" },
+        "branch_id": { "type": "string" },
+        "is_of_the_month": { "type": "boolean" },
+        "month_text": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "role", "exp", "avatar"]
+    },
+    "daily_lesson": {
+      "title": "DailyLesson",
+      "description": "A daily educational lesson entry posted by teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "image_url": { "type": "string" },
+        "description": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "title", "course_id", "course_name", "image_url", "description", "created_at"]
+    },
+    "admin_message": {
+      "title": "AdminMessage",
+      "description": "A bulletin announcement from the academy administration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "title", "content", "created_at"]
+    },
+    "audio_clip": {
+      "title": "AudioClip",
+      "description": "An audio listening clip for course assignments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "audio_url": { "type": "string" },
+        "description": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "title", "course_id", "course_name", "audio_url", "created_at"]
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Frequently Asked Questions for student info",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "sort_order": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "question", "answer", "created_at"]
+    },
+    "room": {
+      "title": "Room",
+      "description": "A physical classroom room within Naji Academy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "capacity": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "created_at"]
+    },
+    "course_schedule": {
+      "title": "CourseSchedule",
+      "description": "A weekly room assignment schedule entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "course_id": { "type": "string" },
+        "course_name": { "type": "string" },
+        "room_id": { "type": "string" },
+        "room_name": { "type": "string" },
+        "day": { "type": "string" },
+        "start_time": { "type": "string" },
+        "end_time": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "course_id", "course_name", "room_id", "room_name", "day", "start_time", "end_time", "created_at"]
+    },
+    "system_log": {
+      "title": "SystemLog",
+      "description": "Auditing log for admin user actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "admin_name": { "type": "string" },
+        "admin_role": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "admin_name", "admin_role", "action", "details", "created_at"]
+    },
+    "subscription_type": {
+      "title": "SubscriptionType",
+      "description": "Supported student enrollment subscription payment plans",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "duration_months": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "name", "price", "duration_months"]
+    },
+    "login_failure": {
+      "title": "LoginFailure",
+      "description": "Tracking document for security login lockouts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "count": { "type": "number" },
+        "lockedUntil": { "type": "number" },
+        "email": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "count", "lockedUntil", "email"]
+    }
+  },
+  "firestore": {
+    "courses": {
+      "schema": "course",
+      "description": "The primary language and skills course catalog"
+    },
+    "bookings": {
+      "schema": "booking",
+      "description": "Web reservation and application requests by potential students"
+    },
+    "reviews": {
+      "schema": "review",
+      "description": "Student course reviews and ratings"
+    },
+    "gallery": {
+      "schema": "gallery_image",
+      "description": "Photo archive showing classrooms, events, and graduation ceremonies"
+    },
+    "videos": {
+      "schema": "video",
+      "description": "Promo videos embedded inside the main website pages"
+    },
+    "admins": {
+      "schema": "admin_user",
+      "description": "Core administrator profile registry with permission roles"
+    },
+    "site_settings": {
+      "schema": "site_setting",
+      "description": "Configuration values, phone numbers, working hours, and hero copy"
+    },
+    "contact_messages": {
+      "schema": "contact_message",
+      "description": "Direct enquiries sent from the contact us webpage form"
+    },
+    "students": {
+      "schema": "student",
+      "description": "Registered students database including system login hashes"
+    },
+    "enrollments": {
+      "schema": "enrollment",
+      "description": "Course-to-student registration linking data"
+    },
+    "attendance": {
+      "schema": "attendance",
+      "description": "Confirmed physical attendance sessions"
+    },
+    "teachers": {
+      "schema": "teacher",
+      "description": "Academic instructors and advisor details"
+    },
+    "daily_lessons": {
+      "schema": "daily_lesson",
+      "description": "Teacher blogs and home task review posts"
+    },
+    "admin_messages": {
+      "schema": "admin_message",
+      "description": "Public announcements pinned to the student dashboard"
+    },
+    "audio_clips": {
+      "schema": "audio_clip",
+      "description": "Audio files for listening homework assignments"
+    },
+    "faq": {
+      "schema": "faq",
+      "description": "Regular general help FAQs for students"
+    },
+    "rooms": {
+      "schema": "room",
+      "description": "Physical classroom space descriptors"
+    },
+    "schedules": {
+      "schema": "course_schedule",
+      "description": "Time-slots mapped to classrooms"
+    },
+    "system_logs": {
+      "schema": "system_log",
+      "description": "Admin operational control audit logs"
+    },
+    "subscription_types": {
+      "schema": "subscription_type",
+      "description": "Finance plans for student subscriptions"
+    },
+    "login_failures": {
+      "schema": "login_failure",
+      "description": "Tracking counts and timestamps of administrative login attempts"
+    }
+  }
+}

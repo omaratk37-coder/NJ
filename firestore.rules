@@ -1,0 +1,124 @@
+rules_version = '2';
+service firestore {
+  match /databases/{database}/documents {
+    
+    // Check if the user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Check if user is an administrator
+    function isAdmin() {
+      return isAuth() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email.matches('.*@najiacademy.dz') ||
+        request.auth.token.email == 'admin@najiacademy.dz' ||
+        request.auth.token.email == 'manager@najiacademy.dz' ||
+        request.auth.token.email == 'innocodeex@gmail.com'
+      );
+    }
+
+    // 1. Site Settings - public read, admin write
+    match /site_settings/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 2. Courses - public read, admin write
+    match /courses/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. Bookings - public create, admin read/write
+    match /bookings/{document} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin() || (isAuth() && request.auth.token.email == resource.data.email);
+    }
+
+    // 4. Reviews - public read/create, admin write
+    match /reviews/{document} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // 5. Gallery & Videos - public read, admin write
+    match /gallery/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /videos/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 6. Subscription Types - public read, admin write
+    match /subscription_types/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 7. Team & Teachers - public read, admin write
+    match /admins/{document} {
+      allow read: if true; // Needed for login checks
+      allow write: if isAdmin() || isAuth();
+    }
+    match /teachers/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 8. Students, Enrollments, Attendance
+    match /students/{document} {
+      allow read: if true; // Allow lookup by student code
+      allow write: if isAdmin() || (isAuth() && request.auth.uid == document);
+    }
+    match /enrollments/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /attendance/{document} {
+      allow read: if true;
+      allow write: if isAdmin() || isAuth();
+    }
+
+    // 9. Daily Lessons, Admin Messages, Audio Clips
+    match /daily_lessons/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /admin_messages/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /audio_clips/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 10. FAQ, Rooms, Schedules, Logs
+    match /faq/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /rooms/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /schedules/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /system_logs/{document} {
+      allow read, write: if isAdmin();
+    }
+    match /contact_messages/{document} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+    match /login_failures/{document} {
+      allow create, update: if true;
+      allow read, delete: if isAdmin();
+    }
+  }
+}
